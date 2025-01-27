@@ -6,5 +6,6 @@ from . import views
 
 urlpatterns: List[path] = [
     path("", views.product_list_view, name="product-list"),
+    path(r"<int:id>", views.product_detail_view, name="product-detail"),
     path(r"category", views.product_category_list_view, name="product-category-list"),
 ]
