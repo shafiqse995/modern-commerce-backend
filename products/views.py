@@ -7,10 +7,16 @@ from .models import Product, ProductCategory
 from .serializers import ProductCategorySerializer, ProductSerializer
 
 
+class ProductListPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = "page_size"
+    max_page_size = 100
+
+
 class ProductListAPIView(ListAPIView):
     """Product List API View"""
 
-    pagination_class = PageNumberPagination
+    pagination_class = ProductListPagination
     queryset = Product.objects.all().order_by("-created_at")
     serializer_class = ProductSerializer
 
