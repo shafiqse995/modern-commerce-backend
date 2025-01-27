@@ -34,7 +34,6 @@ DEBUG = env.bool("DEBUG", default=False)
 
 ALLOWED_HOSTS: List[str] = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -45,6 +44,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
