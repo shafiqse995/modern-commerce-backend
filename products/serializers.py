@@ -8,7 +8,7 @@ class ProductCategorySerializer(serializers.ModelSerializer):
     """Product Category Serializer"""
 
     class Meta:
-        """Meta"""
+        """Product Category Serializer Meta"""
 
         model = ProductCategory
         fields = ["id", "title"]
@@ -20,7 +20,15 @@ class ProductSerializer(serializers.ModelSerializer):
     category = ProductCategorySerializer(read_only=True)
 
     class Meta:
-        """Meta"""
+        """Product Serializer Meta"""
 
         model = Product
-        fields = ["id", "title", "description", "price", "category"]
+        fields = [
+            "id",
+            "title",
+            "description",
+            "price",
+            "category",
+            "created_at",
+            "updated_at",
+        ]
