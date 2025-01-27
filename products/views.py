@@ -1,6 +1,7 @@
 """ Imports """
 
 from rest_framework.generics import ListAPIView  # type: ignore
+from rest_framework.pagination import PageNumberPagination  # type: ignore
 
 from .models import Product, ProductCategory
 from .serializers import ProductCategorySerializer, ProductSerializer
@@ -9,6 +10,7 @@ from .serializers import ProductCategorySerializer, ProductSerializer
 class ProductListAPIView(ListAPIView):
     """Product List API View"""
 
+    pagination_class = PageNumberPagination
     queryset = Product.objects.all().order_by("-created_at")
     serializer_class = ProductSerializer
 
