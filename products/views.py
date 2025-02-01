@@ -1,5 +1,6 @@
 """ Imports """
 
+from django.http import JsonResponse  # type: ignore
 from rest_framework.generics import ListAPIView, RetrieveAPIView  # type: ignore
 from rest_framework.pagination import PageNumberPagination  # type: ignore
 from rest_framework.filters import SearchFilter  # type: ignore
@@ -12,6 +13,19 @@ class ProductListPagination(PageNumberPagination):
     page_size = 10
     page_size_query_param = "page_size"
     max_page_size = 100
+
+    def get_paginated_response(self, data):
+        response = {
+            "count": self.page.paginator.count,
+            "results": data,
+            "next": self.page.next_page_number() if self.page.has_next() else None,
+            "has_next": self.page.has_next(),
+            "previous": (
+                self.page.previous_page_number() if self.page.has_previous() else None
+            ),
+            "has_previous": self.page.has_previous(),
+        }
+        return JsonResponse(response)
 
 
 class ProductListFilter(filters.FilterSet):
