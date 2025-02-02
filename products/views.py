@@ -1,12 +1,15 @@
 """ Imports """
 
-from django.http import JsonResponse  # type: ignore
+from django.http import JsonResponse, HttpRequest  # type: ignore
 from rest_framework.generics import ListAPIView, RetrieveAPIView  # type: ignore
 from rest_framework.pagination import PageNumberPagination  # type: ignore
 from rest_framework.filters import SearchFilter  # type: ignore
 from .models import Product, ProductCategory
 from .serializers import ProductCategorySerializer, ProductSerializer
 from django_filters import rest_framework as filters  # type: ignore
+from rest_framework.decorators import api_view  # type: ignore
+from rest_framework import status  # type: ignore
+from django.db.models import Max, Min  # type: ignore
 
 
 class ProductListPagination(PageNumberPagination):
@@ -71,3 +74,18 @@ class ProductCategoryListAPIView(ListAPIView):
 
 
 product_category_list_view = ProductCategoryListAPIView.as_view()
+
+
+@api_view(["GET"])
+def get_product_price_range(request: HttpRequest) -> JsonResponse:
+    """Product Min Max Price API View"""
+    min_price = Product.objects.all().aggregate(Min("price")).get("price__min", "0")
+    max_price = Product.objects.all().aggregate(Max("price")).get("price__max", "1000")
+
+    return JsonResponse(
+        {
+            "min_price": min_price,
+            "max_price": max_price,
+        },
+        status=status.HTTP_200_OK,
+    )
