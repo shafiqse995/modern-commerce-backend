@@ -79,13 +79,13 @@ product_category_list_view = ProductCategoryListAPIView.as_view()
 @api_view(["GET"])
 def get_product_price_range(request: HttpRequest) -> JsonResponse:
     """Product Min Max Price API View"""
-    min_price = Product.objects.all().aggregate(Min("price")).get("price__min", "0")
-    max_price = Product.objects.all().aggregate(Max("price")).get("price__max", "1000")
+    min_price = Product.objects.all().aggregate(Min("price")).get("price__min")
+    max_price = Product.objects.all().aggregate(Max("price")).get("price__max")
 
     return JsonResponse(
         {
-            "min_price": min_price,
-            "max_price": max_price,
+            "min_price": min_price if min_price is not None else "0",
+            "max_price": max_price if max_price is not None else "1000",
         },
         status=status.HTTP_200_OK,
     )
