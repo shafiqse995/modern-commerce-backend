@@ -1,6 +1,6 @@
 from django.db import transaction  # type: ignore
 
-from orders.models import Order, OrderLineItem
+from orders.models import Order, OrderLineItem, OrderStatus
 from products.models import Product  # type: ignore
 
 
@@ -16,10 +16,13 @@ class OrderService:
         product_ids = [item["product_id"] for item in line_items]
         products = Product.objects.filter(id__in=product_ids).in_bulk()
 
+        print(products)
+
         # calculate order total
-        total_amount = sum(
-            products[item["product_id"]].price * item["quantity"] for item in line_items
-        )
+        total_amount = 0
+        for item in line_items:
+            amount = products.get(item["product_id"]).price * item["quantity"]
+            total_amount += amount
 
         # create order
         order = Order.objects.create(
@@ -49,13 +52,13 @@ class OrderService:
     @staticmethod
     def complete_order(payment_id: str):
         order = Order.objects.get(payment_id=payment_id)
-        order.status = "completed"
+        order.status = OrderStatus.COMPLETED
         order.save()
         return order
 
     @staticmethod
     def fail_order(payment_id: str):
         order = Order.objects.get(payment_id=payment_id)
-        order.status = "failed"
+        order.status = OrderStatus.FAILED
         order.save()
         return order

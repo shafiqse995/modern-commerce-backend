@@ -7,9 +7,8 @@ from products.models import Product  # type: ignore
 
 class OrderStatus(models.TextChoices):
     PENDING = ("pending", _("Pending"))
-    CONFIRMED = ("confirmed", _("Confirmed"))
-    DELIVERED = ("delivered", _("Delivered"))
-    CANCELLED = ("cancelled", _("Cancelled"))
+    COMPLETED = ("completed", _("Completed"))
+    FAILED = ("failed", _("Failed"))
 
 
 # Create your models here.
@@ -39,7 +38,11 @@ class Order(models.Model):
         return OrderStatus(self.status)
 
     def __str__(self):
-        return f"Order {self.order_id}"
+        return f"""
+            Order #{self.id} (
+                status: {self.get_order_status()}
+            )
+        """
 
 
 class OrderLineItem(models.Model):
@@ -53,7 +56,7 @@ class OrderLineItem(models.Model):
     )
 
     def __str__(self):
-        return f"{self.product.name} ({self.quantity})"
+        return f"{self.product.title} ({self.quantity})"
 
     def save(self, *args, **kwargs):
         # If price isn't set, use current product price

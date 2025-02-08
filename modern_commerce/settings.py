@@ -86,19 +86,27 @@ WSGI_APPLICATION = "modern_commerce.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": env.str("DB_NAME"),
-        "USER": env.str("DB_USER"),
-        "PASSWORD": env.str("DB_PASSWORD"),
-        "HOST": env.str("DB_HOST"),
-        "PORT": env.str("DB_PORT"),
-        "OPTIONS": {
-            "sslmode": "require",
+if DEBUG:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": env.str("DB_NAME"),
+            "USER": env.str("DB_USER"),
+            "PASSWORD": env.str("DB_PASSWORD"),
+            "HOST": env.str("DB_HOST"),
+            "PORT": env.str("DB_PORT"),
+            "OPTIONS": {
+                "sslmode": "require",
+            },
         },
-    },
-}
+    }
 
 
 # Password validation
@@ -145,3 +153,4 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Stripe
 STRIPE_PUB_KEY = env.str("STRIPE_PUBLISHABLE_KEY")
 STRIPE_SECRET_KEY = env.str("STRIPE_SECRET_KEY")
+STRIPE_WEBHOOK_SECRET = env.str("STRIPE_WEBHOOK_SECRET")
