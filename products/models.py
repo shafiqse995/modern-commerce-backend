@@ -27,6 +27,7 @@ class Product(models.Model):
     category = models.ForeignKey(ProductCategory, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    media = models.ImageField(upload_to="uploads/")
 
     def check_inventory(self):
         pass

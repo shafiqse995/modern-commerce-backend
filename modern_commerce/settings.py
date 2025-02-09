@@ -20,7 +20,7 @@ from environ import Env  # type: ignore
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = Env()
-env.read_env(path.join(BASE_DIR, ".env.dev"))
+env.read_env(path.join(BASE_DIR, ".env"))
 
 
 # Quick-start development settings - unsuitable for production
@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "rest_framework",
     "django_filters",
+    "storages",
 ]
 
 MIDDLEWARE = [
@@ -68,7 +69,9 @@ ROOT_URLCONF = "modern_commerce.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [
+            BASE_DIR / "templates",
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -155,3 +158,21 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 STRIPE_PUB_KEY = env.str("STRIPE_PUBLISHABLE_KEY")
 STRIPE_SECRET_KEY = env.str("STRIPE_SECRET_KEY")
 STRIPE_WEBHOOK_SECRET = env.str("STRIPE_WEBHOOK_SECRET")
+
+# Storages
+AZURE_ACCOUNT_NAME = env.str("AZURE_ACCOUNT_NAME")
+AZURE_ACCOUNT_KEY = env.str("AZURE_ACCOUNT_KEY")
+AZURE_CONTAINER = env.str("AZURE_CONTAINER")
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.azure_storage.AzureStorage",
+        "OPTIONS": {
+            "account_name": AZURE_ACCOUNT_NAME,
+            "account_key": AZURE_ACCOUNT_KEY,
+            "azure_container": AZURE_CONTAINER,
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
