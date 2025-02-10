@@ -44,7 +44,7 @@ class OrderService:
                 price=product.price,
             )
             order_items.append(order_line_item)
-
+            product.update_inventory(item["quantity"])
         OrderLineItem.objects.bulk_create(order_items)
 
         return order

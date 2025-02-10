@@ -29,11 +29,8 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     media = models.ImageField(upload_to="uploads/")
 
-    def check_inventory(self):
-        pass
-
-    def update_inventory(self):
-        pass
+    def update_inventory(self, new_quantity):
+        self.inventory.update_quantity(new_quantity)
 
     def __str__(self) -> str:
         return f"{self.title}"

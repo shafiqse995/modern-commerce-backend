@@ -16,7 +16,7 @@ class Inventory(models.Model):
     last_updated = models.DateTimeField(auto_now=True)
 
     def update_quantity(self, new_quantity: int):
-        self.quantity = max(0, new_quantity)
+        self.quantity -= new_quantity
         self.save()
 
     def __str__(self):
