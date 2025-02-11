@@ -49,7 +49,8 @@ class OrderService:
     @staticmethod
     def complete_order(payment_id: str):
         order = Order.objects.get(payment_id=payment_id)
-        for line_item in order.line_items:
+        order_line_items = OrderLineItem.objects.all().filter(order=order)
+        for line_item in order_line_items:
             line_item.product.update_inventory(line_item.quantity)
         order.status = OrderStatus.COMPLETED
         order.save()
