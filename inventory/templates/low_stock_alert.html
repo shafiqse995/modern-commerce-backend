@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .container {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .alert {
+            color: #721c24;
+            background-color: #f8d7da;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .details {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Low Stock Alert</h2>
+        <div class="alert">
+            <strong>Warning:</strong> Low stock detected for {{ title }}
+        </div>
+        <div class="details">
+            <h3>Product Details:</h3>
+            <p><strong>Product Name:</strong> {{ title }}</p>
+            <p><strong>Current Stock:</strong> {{ quantity }}</p>
+            <p><strong>Product ID:</strong> {{ id }}</p>
+            <p><strong>Reorder Point:</strong> 5</p>
+        </div>
+        <p>Please reorder soon to avoid stockout.</p>
+    </div>
+</body>
+</html>

@@ -16,8 +16,6 @@ class OrderService:
         product_ids = [item["product_id"] for item in line_items]
         products = Product.objects.filter(id__in=product_ids).in_bulk()
 
-        print(products)
-
         # calculate order total
         total_amount = 0
         for item in line_items:
@@ -44,7 +42,6 @@ class OrderService:
                 price=product.price,
             )
             order_items.append(order_line_item)
-            product.update_inventory(item["quantity"])
         OrderLineItem.objects.bulk_create(order_items)
 
         return order
@@ -52,6 +49,8 @@ class OrderService:
     @staticmethod
     def complete_order(payment_id: str):
         order = Order.objects.get(payment_id=payment_id)
+        for line_item in order.line_items:
+            line_item.product.update_inventory(line_item.quantity)
         order.status = OrderStatus.COMPLETED
         order.save()
         return order

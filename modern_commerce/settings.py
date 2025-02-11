@@ -163,6 +163,16 @@ STRIPE_WEBHOOK_SECRET = env.str("STRIPE_WEBHOOK_SECRET")
 AZURE_ACCOUNT_NAME = env.str("AZURE_ACCOUNT_NAME")
 AZURE_ACCOUNT_KEY = env.str("AZURE_ACCOUNT_KEY")
 AZURE_CONTAINER = env.str("AZURE_CONTAINER")
+
+# Email Services
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = env.str("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD")
+RECIPIENT_EMAIL = env.str("RECIPIENT_EMAIL")
+
 STORAGES = {
     "default": {
         "BACKEND": "storages.backends.azure_storage.AzureStorage",
