@@ -54,6 +54,7 @@ class OrderService:
             line_item.product.update_inventory(line_item.quantity)
         order.status = OrderStatus.COMPLETED
         order.save()
+        order.notify_customer()
         return order
 
     @staticmethod
@@ -61,4 +62,5 @@ class OrderService:
         order = Order.objects.get(payment_id=payment_id)
         order.status = OrderStatus.FAILED
         order.save()
+        order.notify_customer()
         return order

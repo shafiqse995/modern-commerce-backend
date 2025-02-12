@@ -1,6 +1,10 @@
 from django.db import models  # type: ignore
 from django.utils.translation import gettext_lazy as _  # type: ignore
 from django.core.validators import MinValueValidator  # type: ignore
+from django.core.mail import send_mail  # type: ignore
+from modern_commerce.settings import EMAIL_HOST_USER
+from django.template.loader import render_to_string  # type: ignore
+from django.utils.html import strip_tags  # type: ignore
 
 from products.models import Product  # type: ignore
 
@@ -33,6 +37,26 @@ class Order(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def notify_customer(self):
+        template = (
+            "order-completed.html"
+            if self.status == OrderStatus.COMPLETED
+            else "order-failed.html"
+        )
+        subject = (
+            "Order Placed" if self.status == OrderStatus.COMPLETED else "Order Failed"
+        )
+        context = {"order": self}
+        html_message = render_to_string(template, context)
+        plain_message = strip_tags(html_message)
+        send_mail(
+            subject=subject,
+            html_message=html_message,
+            message=plain_message,
+            from_email=EMAIL_HOST_USER,
+            recipient_list=[self.customer_email],
+        )
 
     def get_order_status(self) -> OrderStatus:
         return OrderStatus(self.status)
