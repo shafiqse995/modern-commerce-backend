@@ -32,8 +32,8 @@ SECRET_KEY = env.str("SECRET_KEY", default=None)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
-ALLOWED_HOSTS: List[str] = ["*"]
-CORS_ALLOW_ALL_ORIGINS = True
+ALLOWED_HOSTS: List[str] = env.list("ALLOWED_HOSTS", default=[])
+CORS_ALLOWED_ORIGINS = env.list("ALLOWED_ORIGINS", default=[])
 
 # Application definition
 
