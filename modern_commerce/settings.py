@@ -92,27 +92,27 @@ WSGI_APPLICATION = "modern_commerce.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-if DEBUG:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
-        }
+# if DEBUG:
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": env.str("DB_NAME"),
-            "USER": env.str("DB_USER"),
-            "PASSWORD": env.str("DB_PASSWORD"),
-            "HOST": env.str("DB_HOST"),
-            "PORT": env.str("DB_PORT"),
-            "OPTIONS": {
-                "sslmode": "require",
-            },
-        },
-    }
+}
+# else:
+#     DATABASES = {
+#         "default": {
+#             "ENGINE": "django.db.backends.postgresql",
+#             "NAME": env.str("DB_NAME"),
+#             "USER": env.str("DB_USER"),
+#             "PASSWORD": env.str("DB_PASSWORD"),
+#             "HOST": env.str("DB_HOST"),
+#             "PORT": env.str("DB_PORT"),
+#             "OPTIONS": {
+#                 "sslmode": "require",
+#             },
+#         },
+#     }
 
 
 # Password validation
