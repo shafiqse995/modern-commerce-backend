@@ -34,6 +34,7 @@ DEBUG = env.bool("DEBUG", default=False)
 
 ALLOWED_HOSTS: List[str] = env.list("ALLOWED_HOSTS", default=[])
 CORS_ALLOWED_ORIGINS = env.list("ALLOWED_ORIGINS", default=[])
+CSRF_TRUSTED_ORIGINS = env.list("ALLOWED_ORIGINS", default=[])
 
 # Application definition
 
